@@ -19,7 +19,7 @@ export function PageTabs({ tabs, currentTabIdx, dispatch }) {
       return
     }
     dispatch({ type: 'ADD_TAB', payload: undefined })
-    router.push(`/?${Math.random() * 1000}`)
+    router.push(`?${Math.floor(Math.random() * 100000)}`)
   }
 
   return (
