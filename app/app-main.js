@@ -1,11 +1,11 @@
 'use client';
 
-
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 // import { ThemeProvider } from '@/components/theme-provider'
 import { PageTabs } from '@/components/page-tabs'
 import { Menu } from '@/components/menu'
 
-import { useReducer, useEffect } from 'react'
+import { useReducer, useState, useEffect } from 'react'
 
 const initialState = {
   tabs: [
@@ -72,7 +72,39 @@ const reducer = (state, action) => {
   }
 }
 
+/// Thanks colin~ : https://colinhacks.com/essays/building-a-spa-with-nextjs
 export const AppMain = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const [csrReady, setCsrReady] = useState(false)
+
+  useEffect(() => {
+    setCsrReady(true)
+  }, [])
+
+  return !csrReady ? <h2>Loading...</h2>
+    : (
+      <Router>
+        <Routes>
+          <Route
+            path="/:index"
+            element={
+              <>
+                {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem> */}
+                <Menu tabs={state.tabs} dispatch={dispatch} />
+                <PageTabs tabs={state.tabs} currentTabIdx={state.currentTabIdx} dispatch={dispatch}>
+                  {children}
+                </PageTabs>
+                {/* </ThemeProvider> */}
+              </>
+            }
+          />
+          <Route path="*" element={<Navigate to="/0" replace />} />
+        </Routes>
+      </Router>
+    )
+}
+
+export const AppMain_org = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   return (
     <div>

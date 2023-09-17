@@ -6,12 +6,10 @@ import { ScrollArea, ScrollBar } from './ui/scroll-area'
 
 import { MAX_TABS } from '@/config/constants'
 
-import { useRouter } from 'next/navigation'
-
-let idx = 1
-
+import { useNavigate, useParams } from 'react-router-dom'
 export function PageTabs({ tabs, currentTabIdx, dispatch }) {
-  const router = useRouter()
+  const navigate = useNavigate()
+  const { index = 0 } = useParams()
 
   function onAddButtonClick() {
     if (tabs.length >= MAX_TABS) {
@@ -19,8 +17,10 @@ export function PageTabs({ tabs, currentTabIdx, dispatch }) {
       return
     }
     dispatch({ type: 'ADD_TAB', payload: undefined })
-    router.push(`?${Math.floor(Math.random() * 100000)}`)
+    navigate(`/${currentTabIdx + 1}`)
   }
+
+  console.log({ index, navigate })
 
   return (
     <div className="hidden md:block">

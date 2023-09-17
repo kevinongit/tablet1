@@ -5,6 +5,14 @@ const nextConfig = {
       'images.unsplash.com',
       'source.unsplash.com'
     ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/:any*',
+        destination: '/'
+      }
+    ]
   }
 }
 
